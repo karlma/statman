@@ -49,6 +49,12 @@ ets_stats() ->
                             end, ets:all())),
     [{{vm_ets, objects}, TotalSize}].
 
+io(undefined) ->
+    {{input, InputBytes}, {output, OutputBytes}} = erlang:statistics(io),
+    {{InputBytes, OutputBytes}, []};
+io({PrevInputBytes, PrevOutputBytes}) ->
+    {{input, InputBytes}, {output, OutputBytes}} = erlang:statistics(io),
+    {{InputBytes, OutputBytes}, [{{vm, io_in_bytes}, InputBytes - PrevInputBytes}, {{vm, io_out_bytes}, OutputBytes - PrevOutputBytes}]}.
 
 gc(undefined) ->
     {NumGCs, _, _} = erlang:statistics(garbage_collection),
