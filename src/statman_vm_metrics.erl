@@ -17,7 +17,7 @@ get_gauges() ->
     RunQueue = {{vm, run_queue}, erlang:statistics(run_queue)},
     ProcessCount = {{vm, process_count}, erlang:system_info(process_count)},
 
-    [RunQueue, ProcessCount] ++ Memory ++ message_stats() ++ ets_stats().
+    [RunQueue, ProcessCount] ++ Memory ++ message_stats() ++ ets_stats() ++ session_size().
 
 
 message_stats() ->
