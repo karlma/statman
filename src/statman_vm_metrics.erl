@@ -49,6 +49,10 @@ ets_stats() ->
                             end, ets:all())),
     [{{vm_ets, objects}, TotalSize}].
 
+session_size() ->
+    Size = mnesia:table_info(session, size),
+    [{{mnesia, session_size}, Size}].
+
 io(undefined) ->
     {{input, InputBytes}, {output, OutputBytes}} = erlang:statistics(io),
     {{InputBytes, OutputBytes}, []};
