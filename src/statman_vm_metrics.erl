@@ -17,7 +17,7 @@ get_gauges() ->
     RunQueue = {{vm, run_queue}, erlang:statistics(run_queue)},
     ProcessCount = {{vm, process_count}, erlang:system_info(process_count)},
 
-    [RunQueue, ProcessCount] ++ Memory ++ message_stats() ++ ets_stats() ++ session_size().
+    [RunQueue, ProcessCount] ++ Memory ++ message_stats() ++ ets_stats() ++ mnesia_table_size().
 
 
 message_stats() ->
@@ -49,9 +49,14 @@ ets_stats() ->
                             end, ets:all())),
     [{{vm_ets, objects}, TotalSize}].
 
-session_size() ->
-    Size = mnesia:table_info(session, size),
-    [{{mnesia, session_size}, Size}].
+mnesia_table_size() ->
+    SessionSize = mnesia:table_info(session, size),
+    %%LastActivitySize = mnesia:table_info(last_activity, size),
+    %%VcardSize = mnesia:table_info(vcard, size),
+    [{{mnesia, session_size}, Size}
+    %%,{{mnesia, last_activity_size}, LastActivitySize}
+    %%,{{mnesia, vcard_size}, VcardSize}
+    ].
 
 io(undefined) ->
     {{input, InputBytes}, {output, OutputBytes}} = erlang:statistics(io),
