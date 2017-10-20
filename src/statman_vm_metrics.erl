@@ -53,7 +53,7 @@ mnesia_table_size() ->
     SessionSize = mnesia:table_info(session, size),
     %%LastActivitySize = mnesia:table_info(last_activity, size),
     %%VcardSize = mnesia:table_info(vcard, size),
-    [{{mnesia, session_size}, Size}
+    [{{mnesia, session_size}, SessionSize}
     %%,{{mnesia, last_activity_size}, LastActivitySize}
     %%,{{mnesia, vcard_size}, VcardSize}
     ].
