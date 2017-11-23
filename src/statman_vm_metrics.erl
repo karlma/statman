@@ -38,16 +38,16 @@ message_stats() ->
      {{vm, messages_in_queue}, TotalQueue}].
 
 ets_stats() ->
-    TotalSize = lists:sum(
-                  lists:map(fun (T) ->
+    {Ets, TotalSize} = lists:mapfoldl(fun (T, Acc) ->
                                     case ets:info(T, size) of
                                         N when is_integer(N) ->
-                                            N;
+                                            {{T,size}, Acc + N};
                                         undefined ->
-                                            0
+                                            {{T, 0}, Acc}
                                     end
-                            end, ets:all())),
-    [{{vm_ets, objects}, TotalSize}].
+                            end, 0, ets:all()),
+    Top10 = lists:sublist(Ets, 1, 10),
+    [{{vm_ets, total_size}, TotalSize} | lists:map(fun ({ET, Size}) -> {{vm_ets, ET}, Size} end, Top10)].
 
 mnesia_table_size() ->
     SessionSize = mnesia:table_info(session, size),
