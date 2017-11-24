@@ -46,7 +46,7 @@ ets_stats() ->
                                             {{T, 0}, Acc}
                                     end
                             end, 0, ets:all()),
-    Top10 = lists:sublist(Ets, 1, 10),
+    Top10 = lists:sublist(lists:keysort(2, Ets), 1, 10),
     [{{vm_ets, total_size}, TotalSize} | lists:map(fun ({ET, Size}) -> {{vm_ets, ET}, Size} end, Top10)].
 
 mnesia_table_size() ->
